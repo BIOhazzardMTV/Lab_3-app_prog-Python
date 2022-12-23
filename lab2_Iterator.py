@@ -3,7 +3,6 @@ import os.path
 
 
 class Iterator:
-    """"""
     def __init__(self, path):
         self.counter = 0
         self.data = []

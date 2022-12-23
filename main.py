@@ -1,12 +1,20 @@
 import os
 import sys
+from lab2_Iterator import Iterator
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QIcon
 
 
 class MyWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.setWindowIcon(QIcon('icon.jpeg'))
+        self.folder_path = QFileDialog.getExistingDirectory(self, 'Select dataset folder')
+        self.map_cat = QLabel(self)
+        self.map_dog = QLabel(self)
+        self.grid = QGridLayout(self)
+        self.cat_iterator = Iterator(f"{self.folder_path}/cat")
+        self.dog_iterator = Iterator(f"{self.folder_path}/dog")
         self.button_next_cat = QPushButton('Следующая кошка', self)
         self.button_next_dog = QPushButton('Следующая собака', self)
         self.button_task_1 = QPushButton('csv-файл', self)
@@ -17,6 +25,17 @@ class MyWindow(QMainWindow):
     def init_ui(self):
         self.setGeometry(360, 190, 1200, 700)
         self.setWindowTitle("Lab3")
+
+        self.map_cat.setPixmap(QPixmap(next(self.cat_iterator)))
+        self.map_cat.setScaledContents(True)
+        self.map_cat.setGeometry(5, 5, 590, 490)
+        self.grid.addWidget(self.map_cat)
+
+        self.map_dog.setPixmap(QPixmap(next(self.dog_iterator)))
+        self.map_dog.setScaledContents(True)
+        self.map_dog.setGeometry(605, 5, 590, 490)
+        self.grid.addWidget(self.map_dog)
+
         self.button_next_cat.setGeometry(225, 515, 140, 40)
         self.button_next_cat.setToolTip("Переход к следующему изображению кошки из датасета")
         self.button_next_cat.clicked.connect(self.next_cat)
