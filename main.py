@@ -71,22 +71,27 @@ class MyWindow(QMainWindow):
         self.show()
 
     def next_cat(self):
-        pass
+        self.map_cat.setPixmap(QPixmap(next(self.cat_iterator)))
 
     def next_dog(self):
-        pass
+        self.map_dog.setPixmap(QPixmap(next(self.dog_iterator)))
 
     def task1(self):
-        pass
+        filename = QFileDialog.getSaveFileName(self, "Напишите название файла", filter=".csv")
+        task1(filename[0], self.folder_path)
 
     def task2(self):
-        pass
+        directory = QFileDialog.getExistingDirectory(self, "Выберите новую директорию")
+        task2(self.folder_path, directory)
 
     def task3(self):
-        pass
+        directory = QFileDialog.getExistingDirectory(self, "Выберите новую директорию")
+        task3(self.folder_path, directory)
 
     def show_dialog(self):
-        pass
+        self.folder_path = QFileDialog.getExistingDirectory(self, 'Open file')
+        while not os.path.isdir(f"{self.folder_path}/cat") or not os.path.isdir(f"{self.folder_path}/dog"):
+            self.folder_path = QFileDialog.getExistingDirectory(self, 'Select dataset folder')
 
 
 if __name__ == "__main__":
