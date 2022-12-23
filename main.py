@@ -10,9 +10,8 @@ class MyWindow(QMainWindow):
         super().__init__()
         self.setWindowIcon(QIcon('icon.jpeg'))
         self.folder_path = QFileDialog.getExistingDirectory(self, 'Select dataset folder')
-        self.map_cat = QLabel(self)
-        self.map_dog = QLabel(self)
-        self.grid = QGridLayout(self)
+        while not os.path.isdir(f"{self.folder_path}/cat") or not os.path.isdir(f"{self.folder_path}/dog"):
+            self.folder_path = QFileDialog.getExistingDirectory(self, 'Select dataset folder')
         self.cat_iterator = Iterator(f"{self.folder_path}/cat")
         self.dog_iterator = Iterator(f"{self.folder_path}/dog")
         self.button_next_cat = QPushButton('Следующая кошка', self)
@@ -20,6 +19,13 @@ class MyWindow(QMainWindow):
         self.button_task_1 = QPushButton('csv-файл', self)
         self.button_task_2 = QPushButton('Задание 2', self)
         self.button_task_3 = QPushButton('Задание 3', self)
+        self.open_file = QAction('Open', self)
+        self.map_cat = QLabel(self)
+        self.map_dog = QLabel(self)
+        self.grid = QGridLayout(self)
+        self.menubar = self.menuBar()
+        self.file_menu = self.menubar.addMenu('&File')
+
         self.init_ui()
 
     def init_ui(self):
@@ -56,6 +62,12 @@ class MyWindow(QMainWindow):
         self.button_task_3.setToolTip("Создание датасета с организацией файлов, согласно заданию 3 варианта 3")
         self.button_task_3.clicked.connect(self.task3)
 
+        self.open_file.setShortcut('Ctrl+O')
+        self.open_file.setStatusTip('Open new File')
+        self.open_file.triggered.connect(self.show_dialog)
+
+        self.file_menu.addAction(self.open_file)
+
         self.show()
 
     def next_cat(self):
@@ -71,6 +83,9 @@ class MyWindow(QMainWindow):
         pass
 
     def task3(self):
+        pass
+
+    def show_dialog(self):
         pass
 
 
